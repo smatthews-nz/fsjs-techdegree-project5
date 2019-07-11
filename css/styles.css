@@ -170,6 +170,7 @@ header h1 {
 
 .modal-text {
     color: rgba(50, 50, 50, 0.7);
+    text-transform: capitalize;
     margin: 10px;
 }
 

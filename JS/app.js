@@ -46,15 +46,17 @@ function displayEmployees(people){
     gallery.append(card);
 
     card.on('click', () =>{
-        creatModal(people, index);
+        createModal(people, index);
     })
    });
 }
 
-function creatModal(people, index){
+function createModal(people, index){
 
     const employee = people[index];
     const modalDiv = $('<div>');
+    let birthday = new Date(employee.dob.date);
+    birthday = birthday.toLocaleDateString("en-NZ");
 
     modalDiv.addClass('modal-container');
 
@@ -64,8 +66,40 @@ function creatModal(people, index){
         `
         <div class="modal">
         <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
+        <div class="modal-info-container">
+        <img class="modal-img" src="${employee.picture.large}" alt="profile picture">
+        <h3 id="name" class="modal-name cap">${employee.name.first} ${employee.name.last}</h3>
+        <p class="modal-text">${employee.email}</p>
+        <p class="modal-text cap">${employee.location.city}</p>
+        <hr>
+        <p class="modal-text">${employee.phone}</p>
+        <p class="modal-text">${employee.location.street}, ${employee.location.city}, ${employee.location.state}, ${employee.location.postcode}</p>
+        <p class="modal-text">Birthday: ${birthday}</p>
         </div>
+        </div>
+
+        <div class="modal-btn-container">
+                    <button type="button" id="modal-prev" class="modal-prev btn">Prev</button>
+                    <button type="button" id="modal-next" class="modal-next btn">Next</button>
+         </div>
         `
     )
-
+    
+    //add remove event listener to remove the modal from the page
+    const modalClose = $('.modal-close-btn');
+    modalClose.on('click', ()=> {
+        modalDiv.remove();
+    })
+   //get modal buttons from the DOM
+    const nextBtn = $('.modal-next btn');
+    const prevBtn = $('.modal-prev btn');
+    //move modal windows
+    if (index < people.length - 1){
+        nextBtn.on('click', () => {
+            modalDiv.remove();
+            createModal(people, index +1)
+        });
+    } else {
+        nextBtn.attribute('disabled', true);
+    }
 }
