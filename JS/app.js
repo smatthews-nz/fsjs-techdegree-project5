@@ -44,10 +44,28 @@ function displayEmployees(people){
        `);
     
     gallery.append(card);
+
+    card.on('click', () =>{
+        creatModal(people, index);
+    })
    });
 }
 
 function creatModal(people, index){
 
+    const employee = people[index];
+    const modalDiv = $('<div>');
+
+    modalDiv.addClass('modal-container');
+
+    gallery.append(modalDiv);
+
+    modalDiv.html(
+        `
+        <div class="modal">
+        <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
+        </div>
+        `
+    )
 
 }
