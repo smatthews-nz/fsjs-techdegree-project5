@@ -1,5 +1,6 @@
 //get the gallery from the dom
 const gallery = $('#gallery');
+const search = $('.search-container')
 let modalDivs; 
 
 /**
@@ -87,19 +88,47 @@ function createModal(people, index){
     
     //add remove event listener to remove the modal from the page
     const modalClose = $('.modal-close-btn');
-    modalClose.on('click', ()=> {
+    modalClose.on('click', () => {
         modalDiv.remove();
     })
    //get modal buttons from the DOM
-    const nextBtn = $('.modal-next btn');
-    const prevBtn = $('.modal-prev btn');
-    //move modal windows
+    const nextBtn = $('#modal-next');
+    const prevBtn = $('#modal-prev');
+    //move modal windows using next and prev buttons
+    //add next button functionality
     if (index < people.length - 1){
         nextBtn.on('click', () => {
             modalDiv.remove();
             createModal(people, index +1)
         });
     } else {
-        nextBtn.attribute('disabled', true);
+        nextBtn.attr('disabled', 'true');
+    }
+    //add prev button functionality
+    if(index > 0){
+        prevBtn.on('click', () => {
+            modalDiv.remove();
+            createModal(people, index -1)
+        });
+    } else if(index === 0) {
+        prevBtn.attr('disabled', 'true');
     }
 }
+
+//dynamically append the search html.
+search.html(
+    `<form action="#" method="get">
+        <input type="search" id="search-input" class="search-input" placeholder="Search...">
+            <input type="submit" value="&#x1F50D;" id="serach-submit" class="search-submit">
+    </form>`
+)
+
+/**
+ * searches cards displayed on the screen
+ * for the input given
+ * @params (cards, input) cards are the objects built from the employee objects
+ * input is the search input given
+ */
+ function searchEmployee(cards, input){
+
+ }
