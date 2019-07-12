@@ -1,9 +1,8 @@
 //get the gallery from the dom
 const gallery = $('#gallery');
 const search = $('.search-container');
-const searchInput = $('#search-input');
-const searchSubmit = $('#search-submit');
 const body = $('body');
+const cards = $('.card');
 let modalDivs; 
 
 /**
@@ -129,6 +128,19 @@ function createModal(people, index){
     }
 }
 
+/**
+ * searches cards displayed on the screen
+ * for the input given
+ * @params (cards, input) cards are the objects built from the employee objects
+ * input is the search input given
+ */
+ function searchEmployee(cards, input){
+    cards.filter(card => {
+        const person = card.$('name').html();
+        console.log(person);
+    });
+ }
+
 //dynamically append the search html.
 search.html(
     `<form action="#" method="get">
@@ -137,26 +149,22 @@ search.html(
     </form>`
 )
 
-searchInput.focus();
-
+$('.search-input').focus();
 //add event listeners
 //add keyup listener for typing in the search field
-searchInput.on('keyup', () => {
-
+$('.search-input').on('keyup', (event) => {
+    console.log('keyup listener active');
+    let searchInput = event.target.value;
+    console.log(searchInput);
+    searchEmployee([...cards], searchInput);
 });
 
 //add click listener for submitting search
-searchSubmit.on('click', () => {
-searchEmployee()
+$('.search-submit').on('click', (event) => {
+    event.preventDefault();
+    console.log('submit listener active');
+    let searchInput = $('.search-input').val();
+    console.log(searchInput);
+    searchEmployee([...cards], searchInput);
 });
-
-/**
- * searches cards displayed on the screen
- * for the input given
- * @params (cards, input) cards are the objects built from the employee objects
- * input is the search input given
- */
- function searchEmployee(cards, input){
-
- }
 
