@@ -16,7 +16,7 @@ html, body {
 body {
     font-family: "Nunito", sans-serif;
     text-align: center;
-    background: rgba(235, 235, 235, 0.9);
+    background: rgba(201, 202, 200, 0.9);
 }
 
 header {
@@ -179,7 +179,7 @@ header h1 {
     margin: 25px auto 30px;
     border-color: rgba(200, 200, 200, 0.2);
 }
-
+ 
 .modal-btn-container {
     display: flex;
     flex-direction: row;
@@ -260,5 +260,8 @@ header h1 {
     .btn:hover {
         background: rgba(255, 255, 255, 1);
         color: rgba(25, 25, 25, 1); 
+    }
+    .modal-close-btn:hover{
+        background: #ED2939;
     }
 }

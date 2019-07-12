@@ -1,6 +1,9 @@
 //get the gallery from the dom
 const gallery = $('#gallery');
-const search = $('.search-container')
+const search = $('.search-container');
+const searchInput = $('#search-input');
+const searchSubmit = $('#search-submit');
+const body = $('body');
 let modalDivs; 
 
 /**
@@ -91,6 +94,13 @@ function createModal(people, index){
     modalClose.on('click', () => {
         modalDiv.remove();
     })
+    //remove modal when you click outside
+    body.on('click', (event) => {
+        if(!$(event.target).closest('.modal-info-container, .modal-btn-container, .card').length){
+            modalDiv.remove();
+        }
+    })
+
    //get modal buttons from the DOM
     const nextBtn = $('#modal-next');
     const prevBtn = $('#modal-prev');
@@ -103,6 +113,8 @@ function createModal(people, index){
         });
     } else {
         nextBtn.attr('disabled', 'true');
+        nextBtn.css('background-color', '#ED2939');
+        nextBtn.css('color', 'white');
     }
     //add prev button functionality
     if(index > 0){
@@ -112,6 +124,8 @@ function createModal(people, index){
         });
     } else if(index === 0) {
         prevBtn.attr('disabled', 'true');
+        prevBtn.css('background-color', '#ED2939');
+        prevBtn.css('color', 'white');
     }
 }
 
@@ -123,6 +137,19 @@ search.html(
     </form>`
 )
 
+searchInput.focus();
+
+//add event listeners
+//add keyup listener for typing in the search field
+searchInput.on('keyup', () => {
+
+});
+
+//add click listener for submitting search
+searchSubmit.on('click', () => {
+searchEmployee()
+});
+
 /**
  * searches cards displayed on the screen
  * for the input given
@@ -132,3 +159,4 @@ search.html(
  function searchEmployee(cards, input){
 
  }
+
