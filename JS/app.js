@@ -1,9 +1,13 @@
 //get the gallery from the dom
 const gallery = $('#gallery');
+//get the search container from the DOM
 const search = $('.search-container');
+// get the body from the DOM
 const body = $('body');
+//create the card variable.
 const card = $('.card');
-let modalDivs; 
+//create the cardsArray variable for the search function
+let cardsArray;
 
 
 /**
@@ -21,6 +25,12 @@ function fetchData(url){
 }
 fetchData('https://randomuser.me/api/?results=12&nat=au,ca,gb,nz,us').then(displayEmployees);
 
+/**
+ * Check status checks the response from a fetch request
+ * @param {response} response is the response from fetch request
+ * if response is ok, resolves the promise. 
+ * Else is response is not ok, throws a new error using the returned status text
+ */
 function checkStatus(response){
     if(response.ok){
         return Promise.resolve(response);
@@ -28,6 +38,10 @@ function checkStatus(response){
         return Promise.reject(new Error(response.statusText));
     }
 }
+/**
+ * displayEmployees appends cards for each employee to the DOM
+ * @param {people} people people is the array of random users,
+ */
 
 function displayEmployees(people){
    people.map((person, index) =>{
@@ -52,7 +66,15 @@ function displayEmployees(people){
         createModal(people, index);
     })
    });
+   //build an array of card divs to search later.
+    cardsArray = $('.card').toArray();
 }
+
+/**
+ *  createModal creates a modal pop up window for the clicked card
+ * @param (people, index) people is the array of random users, index is the index of the card clicks
+ * Appends the modal window to the DOM
+ * */ 
 
 function createModal(people, index){
 
@@ -88,12 +110,12 @@ function createModal(people, index){
         `
     )
     
-    //add remove event listener to remove the modal from the page
+    //add remove event listener for the close button to remove the modal from the page
     const modalClose = $('.modal-close-btn');
     modalClose.on('click', () => {
         modalDiv.remove();
     })
-    //remove modal when you click outside
+    //remove modal when you click outside of the modal
     body.on('click', (event) => {
         if(!$(event.target).closest('.modal-info-container, .modal-btn-container, .card').length){
             modalDiv.remove();
@@ -128,20 +150,21 @@ function createModal(people, index){
     }
 }
 
-
 /**
  * searches cards displayed on the screen
  * for the input given
  * @params (cards, input) cards are the objects built from the employee objects
  * input is the search input given
  */
- function searchEmployee(card, input){
-    card.filter(employee => {
-        console.log('search employee called');
-        console.log(card);
-        const person = employee.name.html();
-        console.log(person);
-    });
+ function searchEmployee(input){
+
+        cardsArray.map(card => {
+            if (card.children[1].children[0].textContent.toLowerCase().search(input.toLowerCase()) !== -1) {
+                card.style.display = "";
+            } else {
+                card.style.display = 'none';
+            }
+        });
  }
 
 //dynamically append the search html.
@@ -151,14 +174,14 @@ search.html(
             <input type="submit" value="&#x1F50D;" id="serach-submit" class="search-submit">
     </form>`
 )
-
+//initially focus on search window when window loads
 $('.search-input').focus();
-//add event listeners
-//add keyup listener for typing in the search field
+// add event listeners
+// add keyup listener for typing in the search field
 $('.search-input').on('keyup', (event) => {
     console.log('keyup listener active');
     let searchInput = event.target.value;
-    searchEmployee([...card], searchInput);
+    searchEmployee(searchInput);
 });
 
 //add click listener for submitting search
@@ -166,7 +189,7 @@ $('.search-submit').on('click', (event) => {
     event.preventDefault();
     console.log('submit listener active');
     let searchInput = $('.search-input').val();
-    searchEmployee([...card], searchInput);
+    searchEmployee(searchInput);
 });
 
-console.log($('.card').toArray());
+
