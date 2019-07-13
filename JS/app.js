@@ -2,8 +2,9 @@
 const gallery = $('#gallery');
 const search = $('.search-container');
 const body = $('body');
-const cards = $('.card');
+const card = $('.card');
 let modalDivs; 
+
 
 /**
  * fetchData takes a url, creates a fetch request
@@ -31,7 +32,6 @@ function checkStatus(response){
 function displayEmployees(people){
    people.map((person, index) =>{
 
-    console.log(person, index);
     const card = $('<div>');
     card.addClass('card');
 
@@ -128,15 +128,18 @@ function createModal(people, index){
     }
 }
 
+
 /**
  * searches cards displayed on the screen
  * for the input given
  * @params (cards, input) cards are the objects built from the employee objects
  * input is the search input given
  */
- function searchEmployee(cards, input){
-    cards.filter(card => {
-        const person = card.$('name').html();
+ function searchEmployee(card, input){
+    card.filter(employee => {
+        console.log('search employee called');
+        console.log(card);
+        const person = employee.name.html();
         console.log(person);
     });
  }
@@ -155,8 +158,7 @@ $('.search-input').focus();
 $('.search-input').on('keyup', (event) => {
     console.log('keyup listener active');
     let searchInput = event.target.value;
-    console.log(searchInput);
-    searchEmployee([...cards], searchInput);
+    searchEmployee([...card], searchInput);
 });
 
 //add click listener for submitting search
@@ -164,7 +166,7 @@ $('.search-submit').on('click', (event) => {
     event.preventDefault();
     console.log('submit listener active');
     let searchInput = $('.search-input').val();
-    console.log(searchInput);
-    searchEmployee([...cards], searchInput);
+    searchEmployee([...card], searchInput);
 });
 
+console.log($('.card').toArray());
